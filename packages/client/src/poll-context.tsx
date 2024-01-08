@@ -4,7 +4,8 @@ type PollContextType = {
   pollItems: string[];
   actions: {
     addPollItem: (pollItem: string) => void;
-    deletePollItem: (pollItem: string) => void;
+    deletePollItem: (toDeletePollItem: string) => void;
+    editPollItem: (toEditPollItem: string, editedPollItem: string) => void;
   };
 };
 
@@ -18,10 +19,19 @@ const PollContextProvider = ({ children }: PropsWithChildren): JSX.Element => {
     setPollItems((pollItems) =>
       pollItems.filter((pollItem) => pollItem !== toDeletePollItem)
     );
+  const editPollItem = (toEditPollItem: string, editedPollItem: string) =>
+    setPollItems((pollItems) =>
+      pollItems.map((pollItem) =>
+        pollItem === toEditPollItem ? editedPollItem : pollItem
+      )
+    );
 
   return (
     <PollContext.Provider
-      value={{ pollItems, actions: { addPollItem, deletePollItem } }}
+      value={{
+        pollItems,
+        actions: { addPollItem, deletePollItem, editPollItem },
+      }}
     >
       {children}
     </PollContext.Provider>

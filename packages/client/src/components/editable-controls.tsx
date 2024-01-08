@@ -1,25 +1,50 @@
-import { DeleteIcon } from "@chakra-ui/icons";
-import { IconButton, useEditableControls } from "@chakra-ui/react";
+import { ButtonGroup, IconButton, useEditableControls } from "@chakra-ui/react";
+import { CheckIcon, CloseIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { JSX } from "react";
 
+import { usePollItems } from "../poll-hooks";
+
 type EditableControlsProps = {
-  onDeletePollItem: (pollItem: string) => void;
   pollItem: string;
 };
-const EditableControls = ({
-  onDeletePollItem,
-  pollItem,
-}: EditableControlsProps): JSX.Element => {
-  const { isEditing } = useEditableControls();
+const EditableControls = ({ pollItem }: EditableControlsProps): JSX.Element => {
+  const { deletePollItem } = usePollItems();
+  const {
+    getCancelButtonProps,
+    getEditButtonProps,
+    getSubmitButtonProps,
+    isEditing,
+  } = useEditableControls();
 
-  if (isEditing) return <>bla</>;
+  if (isEditing)
+    return (
+      <ButtonGroup>
+        <IconButton
+          aria-label="Terminar la edición del elemento de votación"
+          icon={<CheckIcon />}
+          {...getSubmitButtonProps()}
+        />
+        <IconButton
+          aria-label="Cancelar la edición del elemento de votación"
+          icon={<CloseIcon />}
+          {...getCancelButtonProps()}
+        />
+      </ButtonGroup>
+    );
 
   return (
-    <IconButton
-      aria-label="Borrar elemento de votación"
-      icon={<DeleteIcon />}
-      onClick={() => onDeletePollItem(pollItem)}
-    />
+    <ButtonGroup>
+      <IconButton
+        aria-label="Terminar la edición del elemento de votación"
+        icon={<EditIcon />}
+        {...getEditButtonProps()}
+      />
+      <IconButton
+        aria-label="Borrar elemento de votación"
+        icon={<DeleteIcon />}
+        onClick={() => deletePollItem(pollItem)}
+      />
+    </ButtonGroup>
   );
 };
 
