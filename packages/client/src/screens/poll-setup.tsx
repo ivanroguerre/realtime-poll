@@ -1,19 +1,16 @@
-import { Box, ListItem, Text, UnorderedList, VStack } from "@chakra-ui/react";
+import { Box, VStack } from "@chakra-ui/react";
 
 import AddPollItem from "../components/add-poll-item";
 import { usePollItems } from "../poll-hooks";
+import PollItemsList from "../components/poll-item-list";
 
 const PollSetup = () => {
-  const { pollItems, addPollItem: handlePollItemSubmit } = usePollItems();
+  const { addPollItem: handlePollItemSubmit } = usePollItems();
   return (
     <VStack align="stretch" justify="center" minH="100vh">
       <Box bgColor="white" borderRadius="lg" p={6}>
         <AddPollItem onPollItemSubmit={handlePollItemSubmit} />
-        <UnorderedList>
-          {pollItems.map((pollItem) => (
-            <ListItem key={pollItem}>{pollItem}</ListItem>
-          ))}
-        </UnorderedList>
+        <PollItemsList />
       </Box>
     </VStack>
   );

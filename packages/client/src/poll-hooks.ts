@@ -5,8 +5,8 @@ import { PollContext } from "./poll-context";
 export const usePollItems = () => {
   const {
     pollItems,
-    actions: { addPollItem },
+    actions: { addPollItem, deletePollItem },
   } = useContext(PollContext);
 
-  return { pollItems, addPollItem };
+  return { addPollItem, deletePollItem, pollItems };
 };
