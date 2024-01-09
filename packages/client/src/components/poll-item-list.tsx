@@ -10,7 +10,7 @@ const PollItemsList = (): JSX.Element => {
   return (
     <UnorderedList ml={0} mt={4} spacing={1} styleType="none">
       {pollItems.map((pollItem) => (
-        <ListItem key={pollItem}>
+        <ListItem key={pollItem.pollItemId}>
           <EditablePollItem pollItem={pollItem} />
         </ListItem>
       ))}

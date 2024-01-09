@@ -1,34 +1,46 @@
 import { JSX, PropsWithChildren, createContext, useState } from "react";
+import { customAlphabet } from "nanoid";
 
-import { PollStatus } from "./types";
+import { PollItem, PollStatus } from "./types";
 
 type PollContextType = {
   actions: {
-    addPollItem: (pollItem: string) => void;
-    deletePollItem: (toDeletePollItem: string) => void;
-    editPollItem: (toEditPollItem: string, editedPollItem: string) => void;
+    addPollItem: (pollItemValue: PollItem["pollItemValue"]) => void;
+    deletePollItem: (pollItemId: PollItem["pollItemId"]) => void;
+    editPollItem: (
+      pollItemId: PollItem["pollItemId"],
+      newPollItemValue: PollItem["pollItemValue"]
+    ) => void;
     finishPoll: VoidFunction;
     startPoll: VoidFunction;
   };
-  pollItems: string[];
+  pollItems: PollItem[];
   pollStatus: PollStatus;
 };
-
 const PollContext = createContext<PollContextType>({} as PollContextType);
 
+const nanoid = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", 5);
+
 const PollContextProvider = ({ children }: PropsWithChildren): JSX.Element => {
-  const [pollItems, setPollItems] = useState<string[]>([]);
+  const [pollItems, setPollItems] = useState<PollItem[]>([]);
   const [pollStatus, setPollStatus] = useState<PollStatus>(PollStatus.Setup);
-  const addPollItem = (pollItem: string) =>
-    setPollItems((pollItems) => pollItems.concat(pollItem));
-  const deletePollItem = (toDeletePollItem: string) =>
-    setPollItems((pollItems) =>
-      pollItems.filter((pollItem) => pollItem !== toDeletePollItem)
+  const addPollItem = (pollItemValue: PollItem["pollItemValue"]) =>
+    setPollItems((_pollItems) =>
+      _pollItems.concat({ pollItemId: nanoid(), pollItemValue })
     );
-  const editPollItem = (toEditPollItem: string, editedPollItem: string) =>
-    setPollItems((pollItems) =>
-      pollItems.map((pollItem) =>
-        pollItem === toEditPollItem ? editedPollItem : pollItem
+  const deletePollItem = (pollItemId: PollItem["pollItemId"]) =>
+    setPollItems((_pollItems) =>
+      _pollItems.filter((_pollItem) => _pollItem.pollItemId !== pollItemId)
+    );
+  const editPollItem = (
+    pollItemId: PollItem["pollItemId"],
+    newPollItemValue: PollItem["pollItemValue"]
+  ) =>
+    setPollItems((_pollItems) =>
+      _pollItems.map((_pollItem) =>
+        _pollItem.pollItemId === pollItemId
+          ? { pollItemId, pollItemValue: newPollItemValue }
+          : _pollItem
       )
     );
   const finishPoll = () => setPollStatus(PollStatus.Finished);

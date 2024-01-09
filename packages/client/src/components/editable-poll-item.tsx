@@ -7,20 +7,21 @@ import {
 import { JSX } from "react";
 
 import EditableControls from "./editable-controls";
+import { PollItem } from "../types";
 import { usePollItems } from "../poll-hooks";
 
 type EditablePollItemProps = {
-  pollItem: string;
+  pollItem: PollItem;
 };
 const EditablePollItem = ({ pollItem }: EditablePollItemProps): JSX.Element => {
   const { editPollItem } = usePollItems();
 
   const handleSubmit = (editedPollItem: string) =>
-    editPollItem(pollItem, editedPollItem);
+    editPollItem(pollItem.pollItemId, editedPollItem);
 
   return (
     <Editable
-      defaultValue={pollItem}
+      defaultValue={pollItem.pollItemValue}
       isPreviewFocusable={false}
       onSubmit={handleSubmit}
     >
