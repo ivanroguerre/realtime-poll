@@ -6,6 +6,7 @@ import { PollItem, PollStatus } from "./types";
 type PollContextType = {
   actions: {
     addPollItem: (pollItemValue: PollItem["pollItemValue"]) => void;
+    changePollTitle: (newPollTitle: string) => void;
     deletePollItem: (pollItemId: PollItem["pollItemId"]) => void;
     editPollItem: (
       pollItemId: PollItem["pollItemId"],
@@ -16,6 +17,7 @@ type PollContextType = {
   };
   pollItems: PollItem[];
   pollStatus: PollStatus;
+  pollTitle: string;
 };
 const PollContext = createContext<PollContextType>({} as PollContextType);
 
@@ -24,10 +26,12 @@ const nanoid = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", 5);
 const PollContextProvider = ({ children }: PropsWithChildren): JSX.Element => {
   const [pollItems, setPollItems] = useState<PollItem[]>([]);
   const [pollStatus, setPollStatus] = useState<PollStatus>(PollStatus.Setup);
+  const [pollTitle, setPollTitle] = useState("");
   const addPollItem = (pollItemValue: PollItem["pollItemValue"]) =>
     setPollItems((_pollItems) =>
       _pollItems.concat({ pollItemId: nanoid(), pollItemValue })
     );
+  const changePollTitle = (newPollTitle: string) => setPollTitle(newPollTitle);
   const deletePollItem = (pollItemId: PollItem["pollItemId"]) =>
     setPollItems((_pollItems) =>
       _pollItems.filter((_pollItem) => _pollItem.pollItemId !== pollItemId)
@@ -51,6 +55,7 @@ const PollContextProvider = ({ children }: PropsWithChildren): JSX.Element => {
       value={{
         actions: {
           addPollItem,
+          changePollTitle,
           deletePollItem,
           editPollItem,
           finishPoll,
@@ -58,6 +63,7 @@ const PollContextProvider = ({ children }: PropsWithChildren): JSX.Element => {
         },
         pollItems,
         pollStatus,
+        pollTitle,
       }}
     >
       {children}

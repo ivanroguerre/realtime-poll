@@ -3,20 +3,16 @@ import {
   FormControl,
   FormErrorMessage,
   FormHelperText,
-  HStack,
   Input,
-  Text,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
 import { FormEvent, JSX, SyntheticEvent, useState } from "react";
-
-import { usePollItems, usePollStatus } from "../poll-hooks";
 
 type AddPollItemProps = {
   onPollItemSubmit: (pollItem: string) => void;
 };
 const AddPollItem = ({ onPollItemSubmit }: AddPollItemProps): JSX.Element => {
-  const { pollItems } = usePollItems();
-  const { startPoll } = usePollStatus();
   const [pollItem, setPollItem] = useState("");
   const [invalidPollItem, setInvalidPollItem] = useState(false);
 
@@ -38,11 +34,20 @@ const AddPollItem = ({ onPollItemSubmit }: AddPollItemProps): JSX.Element => {
   return (
     <section>
       <form onSubmit={handleSubmit}>
-        <Text as="h2" mb={4}>
-          Configuración de votación
-        </Text>
         <FormControl isInvalid={invalidPollItem} mb={4}>
-          <Input onChange={handleChange} type="text" value={pollItem} />
+          <InputGroup>
+            <Input onChange={handleChange} type="text" value={pollItem} />
+            <InputRightElement width="auto">
+              <Button
+                borderBottomLeftRadius={0}
+                borderTopLeftRadius={0}
+                isDisabled={invalidPollItem}
+                type="submit"
+              >
+                Agregar
+              </Button>
+            </InputRightElement>
+          </InputGroup>
           {!invalidPollItem ? (
             <FormHelperText>
               Ingrese mínimo dos elementos para iniciar la votación.
@@ -53,18 +58,6 @@ const AddPollItem = ({ onPollItemSubmit }: AddPollItemProps): JSX.Element => {
             </FormErrorMessage>
           )}
         </FormControl>
-        <HStack justify="space-between">
-          <Button isDisabled={invalidPollItem} type="submit">
-            Agregar
-          </Button>
-          <Button
-            isDisabled={pollItems.length < 2}
-            onClick={startPoll}
-            type="button"
-          >
-            Iniciar votación
-          </Button>
-        </HStack>
       </form>
     </section>
   );
