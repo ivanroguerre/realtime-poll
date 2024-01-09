@@ -7,4 +7,5 @@ export enum PollStatus {
 export type PollItem = {
   pollItemId: string;
   pollItemValue: string;
+  pollItemVotesValue?: number;
 };
