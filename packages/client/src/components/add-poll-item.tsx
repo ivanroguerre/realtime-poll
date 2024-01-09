@@ -3,15 +3,20 @@ import {
   FormControl,
   FormErrorMessage,
   FormHelperText,
+  HStack,
   Input,
   Text,
 } from "@chakra-ui/react";
 import { FormEvent, JSX, SyntheticEvent, useState } from "react";
 
+import { usePollItems, usePollStatus } from "../poll-hooks";
+
 type AddPollItemProps = {
   onPollItemSubmit: (pollItem: string) => void;
 };
 const AddPollItem = ({ onPollItemSubmit }: AddPollItemProps): JSX.Element => {
+  const { pollItems } = usePollItems();
+  const { startPoll } = usePollStatus();
   const [pollItem, setPollItem] = useState("");
   const [invalidPollItem, setInvalidPollItem] = useState(false);
 
@@ -39,16 +44,27 @@ const AddPollItem = ({ onPollItemSubmit }: AddPollItemProps): JSX.Element => {
         <FormControl isInvalid={invalidPollItem} mb={4}>
           <Input onChange={handleChange} type="text" value={pollItem} />
           {!invalidPollItem ? (
-            <FormHelperText>Ingrese el elemento de votación.</FormHelperText>
+            <FormHelperText>
+              Ingrese mínimo dos elementos para iniciar la votación.
+            </FormHelperText>
           ) : (
             <FormErrorMessage>
               No se permite un elemento de votación vacío.
             </FormErrorMessage>
           )}
         </FormControl>
-        <Button isDisabled={invalidPollItem} type="submit">
-          Agregar
-        </Button>
+        <HStack justify="space-between">
+          <Button isDisabled={invalidPollItem} type="submit">
+            Agregar
+          </Button>
+          <Button
+            isDisabled={pollItems.length < 2}
+            onClick={startPoll}
+            type="button"
+          >
+            Iniciar votación
+          </Button>
+        </HStack>
       </form>
     </section>
   );

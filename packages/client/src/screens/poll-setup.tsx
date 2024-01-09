@@ -1,8 +1,8 @@
 import { Box, VStack } from "@chakra-ui/react";
 
 import AddPollItem from "../components/add-poll-item";
-import { usePollItems } from "../poll-hooks";
 import PollItemsList from "../components/poll-item-list";
+import { usePollItems } from "../poll-hooks";
 
 const PollSetup = () => {
   const { addPollItem: handlePollItemSubmit } = usePollItems();

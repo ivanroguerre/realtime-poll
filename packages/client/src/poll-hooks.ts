@@ -10,3 +10,12 @@ export const usePollItems = () => {
 
   return { addPollItem, deletePollItem, editPollItem, pollItems };
 };
+
+export const usePollStatus = () => {
+  const {
+    actions: { finishPoll, startPoll },
+    pollStatus,
+  } = useContext(PollContext);
+
+  return { finishPoll, pollStatus, startPoll };
+};
