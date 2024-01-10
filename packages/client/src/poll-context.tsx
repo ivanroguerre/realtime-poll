@@ -3,6 +3,7 @@ import { customAlphabet } from "nanoid";
 
 import { PollItem } from "shared";
 import { Status } from "./types";
+import { useSocket } from "./socket-hooks";
 
 type PollContextType = {
   actions: {
@@ -25,6 +26,7 @@ const PollContextProvider = ({ children }: PropsWithChildren): JSX.Element => {
   const [items, setItems] = useState<PollItem[]>([]);
   const [status, setStatus] = useState<Status>(Status.Setup);
   const [title, setTitle] = useState("");
+  const socket = useSocket();
   const addItem = (value: PollItem["value"]) =>
     setItems((_items) => _items.concat({ id: nanoid(), value }));
   const changeTitle = (title: string) => setTitle(title);
@@ -37,7 +39,10 @@ const PollContextProvider = ({ children }: PropsWithChildren): JSX.Element => {
       )
     );
   const finish = () => setStatus(Status.Finish);
-  const start = () => setStatus(Status.Start);
+  const start = () => {
+    setStatus(Status.Start);
+    socket.emit("poll-started");
+  };
 
   return (
     <PollContext.Provider

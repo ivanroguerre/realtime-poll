@@ -6,13 +6,16 @@ import { StrictMode } from "react";
 
 import App from "./app";
 import { PollContextProvider } from "./poll-context";
+import { SocketContextProvider } from "./socket-context";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ChakraProvider>
-      <PollContextProvider>
-        <App />
-      </PollContextProvider>
+      <SocketContextProvider>
+        <PollContextProvider>
+          <App />
+        </PollContextProvider>
+      </SocketContextProvider>
     </ChakraProvider>
   </StrictMode>
 );

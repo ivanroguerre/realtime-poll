@@ -15,7 +15,7 @@ const Poll = () => {
         </Text>
         <VStack align="stretch" gap={3} mb={4}>
           {items.map((item) => (
-            <PollItem item={item} />
+            <PollItem item={item} key={item.id} />
           ))}
         </VStack>
         <Button onClick={finish}>Finalizar votación</Button>

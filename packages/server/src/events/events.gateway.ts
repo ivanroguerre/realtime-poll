@@ -10,14 +10,8 @@ export class EventsGateway {
   @WebSocketServer()
   server: Server;
 
-  @SubscribeMessage('events')
-  handleMessage() {
-    console.log('received');
-    this.sendEvents();
-    return 'Hello world!';
-  }
-
-  sendEvents() {
-    this.server.emit('events', 'hahahahahahahah s');
+  @SubscribeMessage('poll-started')
+  handlePollStarted() {
+    console.log('works!');
   }
 }
