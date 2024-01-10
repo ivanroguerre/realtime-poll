@@ -1,11 +1,5 @@
-export enum PollStatus {
+export enum Status {
   Setup,
-  Started,
-  Finished,
+  Start,
+  Finish,
 }
-
-export type PollItem = {
-  pollItemId: string;
-  pollItemValue: string;
-  pollItemVotesValue?: number;
-};

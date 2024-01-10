@@ -2,29 +2,29 @@ import { useContext } from "react";
 
 import { PollContext } from "./poll-context";
 
-export const usePollItems = () => {
+export const useItems = () => {
   const {
-    pollItems,
-    actions: { addPollItem, deletePollItem, editPollItem },
+    actions: { addItem, deleteItem, editItem },
+    items,
   } = useContext(PollContext);
 
-  return { addPollItem, deletePollItem, editPollItem, pollItems };
+  return { addItem, deleteItem, editItem, items };
 };
 
-export const usePollTitle = () => {
+export const useTitle = () => {
   const {
-    actions: { changePollTitle },
-    pollTitle,
+    actions: { changeTitle },
+    title,
   } = useContext(PollContext);
 
-  return { changePollTitle, pollTitle };
+  return { changeTitle, title };
 };
 
-export const usePollStatus = () => {
+export const useStatus = () => {
   const {
-    actions: { finishPoll, startPoll },
-    pollStatus,
+    actions: { finish, start },
+    status,
   } = useContext(PollContext);
 
-  return { finishPoll, pollStatus, startPoll };
+  return { finish, start, status };
 };

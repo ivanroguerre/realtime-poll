@@ -1,25 +1,25 @@
 import { Box, Button, Text, VStack } from "@chakra-ui/react";
 
-import AddPollItem from "../components/add-poll-item";
-import AddPollTitle from "../components/add-poll-title";
+import AddItem from "../components/add-item";
+import AddTitle from "../components/add-title";
 import PollItemsList from "../components/poll-item-list";
-import { usePollItems, usePollStatus, usePollTitle } from "../poll-hooks";
+import { useItems, useStatus, useTitle } from "../poll-hooks";
 
 const PollSetup = () => {
-  const { addPollItem: handlePollItemSubmit, pollItems } = usePollItems();
-  const { pollTitle } = usePollTitle();
-  const { startPoll } = usePollStatus();
+  const { addItem: handleItemSubmit, items } = useItems();
+  const { title } = useTitle();
+  const { start } = useStatus();
   return (
     <VStack align="stretch" justify="center" minH="100vh">
       <Box bgColor="white" borderRadius="lg" p={6}>
         <Text as="h2" mb={4}>
           Configuración de votación
         </Text>
-        <AddPollTitle />
-        <AddPollItem onPollItemSubmit={handlePollItemSubmit} />
+        <AddTitle />
+        <AddItem onItemSubmit={handleItemSubmit} />
         <Button
-          isDisabled={pollItems.length < 2 || pollTitle.length === 0}
-          onClick={startPoll}
+          isDisabled={items.length < 2 || title.length === 0}
+          onClick={start}
           type="button"
         >
           Iniciar votación

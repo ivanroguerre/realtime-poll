@@ -9,46 +9,46 @@ import {
 } from "@chakra-ui/react";
 import { FormEvent, JSX, SyntheticEvent, useState } from "react";
 
-type AddPollItemProps = {
-  onPollItemSubmit: (pollItem: string) => void;
+type AddItemProps = {
+  onItemSubmit: (value: string) => void;
 };
-const AddPollItem = ({ onPollItemSubmit }: AddPollItemProps): JSX.Element => {
-  const [pollItem, setPollItem] = useState("");
-  const [invalidPollItem, setInvalidPollItem] = useState(false);
+const AddItem = ({ onItemSubmit }: AddItemProps): JSX.Element => {
+  const [item, setItem] = useState("");
+  const [invalidItem, setInvalidItem] = useState(false);
 
   const handleChange = (event: FormEvent<HTMLInputElement>) => {
-    const newPollItem = event.currentTarget.value;
-    setPollItem(newPollItem);
-    setInvalidPollItem(newPollItem === "");
+    const _item = event.currentTarget.value;
+    setItem(_item);
+    setInvalidItem(_item === "");
   };
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
-    if (pollItem === "") {
-      setInvalidPollItem(true);
+    if (item === "") {
+      setInvalidItem(true);
       return;
     }
-    onPollItemSubmit(pollItem);
-    setPollItem("");
+    onItemSubmit(item);
+    setItem("");
   };
 
   return (
     <section>
       <form onSubmit={handleSubmit}>
-        <FormControl isInvalid={invalidPollItem} mb={4}>
+        <FormControl isInvalid={invalidItem} mb={4}>
           <InputGroup>
-            <Input onChange={handleChange} type="text" value={pollItem} />
+            <Input onChange={handleChange} type="text" value={item} />
             <InputRightElement width="auto">
               <Button
                 borderBottomLeftRadius={0}
                 borderTopLeftRadius={0}
-                isDisabled={invalidPollItem}
+                isDisabled={invalidItem}
                 type="submit"
               >
                 Agregar
               </Button>
             </InputRightElement>
           </InputGroup>
-          {!invalidPollItem ? (
+          {!invalidItem ? (
             <FormHelperText>
               Ingrese mínimo dos elementos para iniciar la votación.
             </FormHelperText>
@@ -63,4 +63,4 @@ const AddPollItem = ({ onPollItemSubmit }: AddPollItemProps): JSX.Element => {
   );
 };
 
-export default AddPollItem;
+export default AddItem;

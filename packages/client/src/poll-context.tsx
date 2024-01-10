@@ -1,69 +1,58 @@
 import { JSX, PropsWithChildren, createContext, useState } from "react";
 import { customAlphabet } from "nanoid";
 
-import { PollItem, PollStatus } from "./types";
+import { PollItem } from "shared";
+import { Status } from "./types";
 
 type PollContextType = {
   actions: {
-    addPollItem: (pollItemValue: PollItem["pollItemValue"]) => void;
-    changePollTitle: (newPollTitle: string) => void;
-    deletePollItem: (pollItemId: PollItem["pollItemId"]) => void;
-    editPollItem: (
-      pollItemId: PollItem["pollItemId"],
-      newPollItemValue: PollItem["pollItemValue"]
-    ) => void;
-    finishPoll: VoidFunction;
-    startPoll: VoidFunction;
+    addItem: (value: PollItem["value"]) => void;
+    changeTitle: (title: string) => void;
+    deleteItem: (id: PollItem["id"]) => void;
+    editItem: (id: PollItem["id"], value: PollItem["value"]) => void;
+    finish: VoidFunction;
+    start: VoidFunction;
   };
-  pollItems: PollItem[];
-  pollStatus: PollStatus;
-  pollTitle: string;
+  items: PollItem[];
+  status: Status;
+  title: string;
 };
 const PollContext = createContext<PollContextType>({} as PollContextType);
 
 const nanoid = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", 5);
 
 const PollContextProvider = ({ children }: PropsWithChildren): JSX.Element => {
-  const [pollItems, setPollItems] = useState<PollItem[]>([]);
-  const [pollStatus, setPollStatus] = useState<PollStatus>(PollStatus.Setup);
-  const [pollTitle, setPollTitle] = useState("");
-  const addPollItem = (pollItemValue: PollItem["pollItemValue"]) =>
-    setPollItems((_pollItems) =>
-      _pollItems.concat({ pollItemId: nanoid(), pollItemValue })
-    );
-  const changePollTitle = (newPollTitle: string) => setPollTitle(newPollTitle);
-  const deletePollItem = (pollItemId: PollItem["pollItemId"]) =>
-    setPollItems((_pollItems) =>
-      _pollItems.filter((_pollItem) => _pollItem.pollItemId !== pollItemId)
-    );
-  const editPollItem = (
-    pollItemId: PollItem["pollItemId"],
-    newPollItemValue: PollItem["pollItemValue"]
-  ) =>
-    setPollItems((_pollItems) =>
-      _pollItems.map((_pollItem) =>
-        _pollItem.pollItemId === pollItemId
-          ? { pollItemId, pollItemValue: newPollItemValue }
-          : _pollItem
+  const [items, setItems] = useState<PollItem[]>([]);
+  const [status, setStatus] = useState<Status>(Status.Setup);
+  const [title, setTitle] = useState("");
+  const addItem = (value: PollItem["value"]) =>
+    setItems((_items) => _items.concat({ id: nanoid(), value }));
+  const changeTitle = (title: string) => setTitle(title);
+  const deleteItem = (id: PollItem["id"]) =>
+    setItems((_items) => _items.filter((_item) => _item.id !== id));
+  const editItem = (id: PollItem["id"], value: PollItem["value"]) =>
+    setItems((_items) =>
+      _items.map((_item) =>
+        _item.id === id ? { ..._item, value: value } : _item
       )
     );
-  const finishPoll = () => setPollStatus(PollStatus.Finished);
-  const startPoll = () => setPollStatus(PollStatus.Started);
+  const finish = () => setStatus(Status.Finish);
+  const start = () => setStatus(Status.Start);
 
   return (
     <PollContext.Provider
       value={{
         actions: {
-          addPollItem,
-          changePollTitle,
-          deletePollItem,
-          editPollItem,
-          finishPoll,
-          startPoll,
+          addItem,
+          changeTitle,
+          deleteItem,
+          editItem,
+          finish,
+          start,
         },
-        pollItems,
-        pollStatus,
-        pollTitle,
+        items,
+        status,
+        title,
       }}
     >
       {children}

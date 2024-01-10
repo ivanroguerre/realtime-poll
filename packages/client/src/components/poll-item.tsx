@@ -1,12 +1,12 @@
 import { Box, HStack, Progress, Tag, TagLabel, Text } from "@chakra-ui/react";
 import { useEffect, useRef, JSX } from "react";
 
-import { PollItem as PollItemType } from "../types";
+import { PollItem as PollItemType } from "shared";
 
 type PollItemProps = {
-  pollItem: PollItemType;
+  item: PollItemType;
 };
-const PollItem = ({ pollItem }: PollItemProps): JSX.Element => {
+const PollItem = ({ item }: PollItemProps): JSX.Element => {
   const progressRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,11 +29,7 @@ const PollItem = ({ pollItem }: PollItemProps): JSX.Element => {
         boxShadow="inset -1px 2px 2px 0px rgba(0, 0, 0, 0.3)"
         height="32px"
         ref={progressRef}
-        value={
-          pollItem.pollItemVotesValue !== undefined
-            ? pollItem.pollItemVotesValue
-            : 0
-        }
+        value={item.votes !== undefined ? item.votes : 0}
       />
       <HStack
         h="32px"
@@ -44,12 +40,12 @@ const PollItem = ({ pollItem }: PollItemProps): JSX.Element => {
         w="100%"
       >
         <Text textOverflow="ellipsis" overflow="hidden">
-          {pollItem.pollItemValue}
+          {item.value}
         </Text>
         <Text>
           Vote con:{" "}
           <Tag justifyContent="center" textAlign="center" w="70px">
-            <TagLabel>{pollItem.pollItemId}</TagLabel>
+            <TagLabel>{item.id}</TagLabel>
           </Tag>
         </Text>
       </HStack>

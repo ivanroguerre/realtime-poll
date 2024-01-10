@@ -2,14 +2,14 @@ import { ButtonGroup, IconButton, useEditableControls } from "@chakra-ui/react";
 import { CheckIcon, CloseIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { JSX } from "react";
 
-import { PollItem } from "../types";
-import { usePollItems } from "../poll-hooks";
+import { PollItem } from "shared";
+import { useItems } from "../poll-hooks";
 
 type EditableControlsProps = {
-  pollItem: PollItem;
+  item: PollItem;
 };
-const EditableControls = ({ pollItem }: EditableControlsProps): JSX.Element => {
-  const { deletePollItem } = usePollItems();
+const EditableControls = ({ item }: EditableControlsProps): JSX.Element => {
+  const { deleteItem } = useItems();
   const {
     getCancelButtonProps,
     getEditButtonProps,
@@ -43,7 +43,7 @@ const EditableControls = ({ pollItem }: EditableControlsProps): JSX.Element => {
       <IconButton
         aria-label="Borrar elemento de votación"
         icon={<DeleteIcon />}
-        onClick={() => deletePollItem(pollItem.pollItemId)}
+        onClick={() => deleteItem(item.id)}
       />
     </ButtonGroup>
   );

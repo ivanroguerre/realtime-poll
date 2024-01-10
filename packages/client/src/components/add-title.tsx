@@ -6,24 +6,24 @@ import {
 } from "@chakra-ui/react";
 import { FormEvent, JSX, useState } from "react";
 
-import { usePollTitle } from "../poll-hooks";
+import { useTitle } from "../poll-hooks";
 
-const AddPollTitle = (): JSX.Element => {
-  const { changePollTitle, pollTitle } = usePollTitle();
-  const [invalidPollTitle, setInvalidPollTitle] = useState(false);
+const AddTitle = (): JSX.Element => {
+  const { changeTitle, title } = useTitle();
+  const [invalidTitle, setInvalidTitle] = useState(false);
 
   const handleChange = (event: FormEvent<HTMLInputElement>) => {
-    const newPollTitle = event.currentTarget.value;
-    changePollTitle(newPollTitle);
-    setInvalidPollTitle(newPollTitle === "");
+    const _title = event.currentTarget.value;
+    changeTitle(_title);
+    setInvalidTitle(_title === "");
   };
 
   return (
     <section>
       <form onSubmit={(e) => e.preventDefault()}>
-        <FormControl isInvalid={invalidPollTitle} mb={4}>
-          <Input onChange={handleChange} type="text" value={pollTitle} />
-          {!invalidPollTitle ? (
+        <FormControl isInvalid={invalidTitle} mb={4}>
+          <Input onChange={handleChange} type="text" value={title} />
+          {!invalidTitle ? (
             <FormHelperText>Ingrese el título de la votación.</FormHelperText>
           ) : (
             <FormErrorMessage>No se permite un título vacío.</FormErrorMessage>
@@ -34,4 +34,4 @@ const AddPollTitle = (): JSX.Element => {
   );
 };
 
-export default AddPollTitle;
+export default AddTitle;
