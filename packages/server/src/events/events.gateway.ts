@@ -18,5 +18,6 @@ export class EventsGateway {
   @SubscribeMessage('poll-started')
   handlePollStarted(@MessageBody() items: PollItem[]) {
     this.pollService.setupPoll(items);
+    return { status: 'ok' };
   }
 }
