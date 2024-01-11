@@ -1,6 +1,7 @@
 import { Container } from "@chakra-ui/react";
 
 import Poll from "./screens/poll";
+import PollLoad from "./screens/poll-load";
 import PollSetup from "./screens/poll-setup";
 import PollResults from "./screens/poll-results";
 import { Status } from "./types";
@@ -10,6 +11,7 @@ const App = () => {
   const { status } = useStatus();
   return (
     <Container>
+      {status === Status.Load && <PollLoad />}
       {status === Status.Setup && <PollSetup />}
       {status === Status.Start && <Poll />}
       {status === Status.Finish && <PollResults />}

@@ -12,6 +12,7 @@ type PollContextType = {
     deleteItem: (id: PollItem["id"]) => void;
     editItem: (id: PollItem["id"], value: PollItem["value"]) => void;
     finish: VoidFunction;
+    load: VoidFunction;
     start: VoidFunction;
   };
   items: PollItem[];
@@ -39,6 +40,7 @@ const PollContextProvider = ({ children }: PropsWithChildren): JSX.Element => {
       )
     );
   const finish = () => setStatus(Status.Finish);
+  const load = () => setStatus(Status.Load);
   const start = () => {
     setStatus(Status.Start);
     socket.emit("poll-started", items);
@@ -54,6 +56,7 @@ const PollContextProvider = ({ children }: PropsWithChildren): JSX.Element => {
           editItem,
           finish,
           start,
+          load,
         },
         items,
         status,

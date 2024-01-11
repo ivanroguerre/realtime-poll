@@ -16,7 +16,7 @@ export class EventsGateway {
   server: Server;
 
   @SubscribeMessage('poll-started')
-  handlePollStarted(@MessageBody() pollItems: PollItem[]) {
-    this.pollService.setupPoll(pollItems);
+  handlePollStarted(@MessageBody() items: PollItem[]) {
+    this.pollService.setupPoll(items);
   }
 }

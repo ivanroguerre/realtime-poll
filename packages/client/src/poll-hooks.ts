@@ -22,9 +22,9 @@ export const useTitle = () => {
 
 export const useStatus = () => {
   const {
-    actions: { finish, start },
+    actions: { finish, load, start },
     status,
   } = useContext(PollContext);
 
-  return { finish, start, status };
+  return { finish, load, start, status };
 };
