@@ -24,10 +24,11 @@ export const verifyDiscordRequest = (clientKey: string) => {
 export const discordRequest = async (
   baseURL: string,
   endpoint: string,
-  options: RequestInit,
+  options: any,
   botToken: string,
 ) => {
   const url = baseURL + endpoint;
+  console.log(url);
   if (options.body !== undefined) options.body = JSON.stringify(options.body);
   const res = await fetch(url, {
     headers: {
@@ -52,7 +53,12 @@ export const installGlobalCommands = async (
 ) => {
   const endpoint = `applications/${appId}/commands`;
   try {
-    await discordRequest(baseURL, endpoint, { method: 'PUT' }, botToken);
+    await discordRequest(
+      baseURL,
+      endpoint,
+      { method: 'PUT', body: commands },
+      botToken,
+    );
   } catch (err) {
     console.error(err);
   }
