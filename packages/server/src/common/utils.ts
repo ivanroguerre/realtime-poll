@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { verifyKey } from 'discord-interactions';
 
+import { Command } from './types';
+
 export const verifyDiscordRequest = (clientKey: string) => {
   const verifyFunction = (
     req: Request,
@@ -40,4 +42,18 @@ export const discordRequest = async (
     throw new Error(JSON.stringify(res.json()));
   }
   return res;
+};
+
+export const installGlobalCommands = async (
+  appId: string,
+  baseURL: string,
+  botToken: string,
+  commands: Command[],
+) => {
+  const endpoint = `applications/${appId}/commands`;
+  try {
+    await discordRequest(baseURL, endpoint, { method: 'PUT' }, botToken);
+  } catch (err) {
+    console.error(err);
+  }
 };
