@@ -18,3 +18,26 @@ export const verifyDiscordRequest = (clientKey: string) => {
   };
   return verifyFunction;
 };
+
+export const discordRequest = async (
+  baseURL: string,
+  endpoint: string,
+  options: RequestInit,
+  botToken: string,
+) => {
+  const url = baseURL + endpoint;
+  if (options.body !== undefined) options.body = JSON.stringify(options.body);
+  const res = await fetch(url, {
+    headers: {
+      Authorization: `Bot ${botToken}`,
+      'Content-Type': 'application/json; charset=UTF-8',
+      'User-Agent':
+        'DiscordBot (https://github.com/ivanroguerre/realtime-poll, 1.0.0)',
+    },
+    ...options,
+  });
+  if (!res.ok) {
+    throw new Error(JSON.stringify(res.json()));
+  }
+  return res;
+};
