@@ -5,7 +5,7 @@ import { installGlobalCommands } from './utils';
 
 const VOTE_COMMAND: Command = {
   description: 'Votar por un elemento',
-  name: 'vote',
+  name: 'votar',
   type: 1,
 };
 
