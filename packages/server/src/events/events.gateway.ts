@@ -6,8 +6,8 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 
-import { PollItem } from 'shared';
 import { PollService } from 'src/poll/poll.service';
+import { PollSetupInfo } from 'src/common/types';
 
 @WebSocketGateway({ cors: { origin: '*' } })
 export class EventsGateway {
@@ -15,9 +15,9 @@ export class EventsGateway {
   @WebSocketServer()
   server: Server;
 
-  @SubscribeMessage('poll-started')
-  handlePollStarted(@MessageBody() items: PollItem[]) {
-    this.pollService.setupPoll(items);
+  @SubscribeMessage('poll-setup')
+  handlePollSetup(@MessageBody() pollSetupInfo: PollSetupInfo) {
+    this.pollService.pollSetup(pollSetupInfo);
     return { status: 'ok' };
   }
 }

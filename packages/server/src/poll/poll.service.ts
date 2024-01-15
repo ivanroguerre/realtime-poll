@@ -1,13 +1,16 @@
 import { Injectable } from '@nestjs/common';
 
 import { PollItem } from 'shared';
+import { PollSetupInfo } from 'src/common/types';
 
 @Injectable()
 export class PollService {
   items: PollItem[];
+  title: PollSetupInfo['title'];
 
-  setupPoll(items: PollItem[]) {
-    this.items = items;
+  pollSetup(pollSetupInfo: PollSetupInfo) {
+    this.items = pollSetupInfo.items;
+    this.title = pollSetupInfo.title;
   }
 
   test() {
