@@ -24,8 +24,7 @@ export class DiscordController {
       if (name === 'votar') {
         return {
           data: {
-            // TODO: obtener el título desde el front
-            content: 'Título de la votación en curso',
+            content: this.discordService.getPollTitle(),
             components: [
               {
                 type: MessageComponentTypes.ACTION_ROW,

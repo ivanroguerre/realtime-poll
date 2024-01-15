@@ -7,9 +7,13 @@ export class DiscordService {
   constructor(private pollService: PollService) {}
 
   getPollOptions() {
-    return this.pollService.test().map((pollItem) => ({
-      label: pollItem.value,
-      value: pollItem.id,
+    return this.pollService.getItems().map((item) => ({
+      label: item.value,
+      value: item.id,
     }));
+  }
+
+  getPollTitle() {
+    return this.pollService.getTitle();
   }
 }
