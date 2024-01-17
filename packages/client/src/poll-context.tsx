@@ -1,4 +1,10 @@
-import { JSX, PropsWithChildren, createContext, useState } from "react";
+import {
+  JSX,
+  PropsWithChildren,
+  createContext,
+  useEffect,
+  useState,
+} from "react";
 import { customAlphabet } from "nanoid";
 
 import { PollItem } from "shared";
@@ -47,6 +53,14 @@ const PollContextProvider = ({ children }: PropsWithChildren): JSX.Element => {
       if (res.status === "ok") setStatus(Status.Start);
     });
   };
+
+  useEffect(() => {
+    socket.on("poll-update", ({ id, votes }) =>
+      setItems((_items) =>
+        _items.map((_item) => (_item.id === id ? { ..._item, votes } : _item))
+      )
+    );
+  }, []);
 
   return (
     <PollContext.Provider

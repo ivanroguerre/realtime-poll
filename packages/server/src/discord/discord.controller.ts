@@ -57,8 +57,8 @@ export class DiscordController {
       if (componentId === 'vote_choice') {
         const userId = request.body.member.user.global_name;
         const pollItemId = data.values[0];
-        this.pollService.vote(pollItemId);
-        this.eventsGateway.sendPollUpdate(this.pollService.getItems());
+        const pollItemVotes = this.pollService.vote(pollItemId);
+        this.eventsGateway.sendPollUpdate(pollItemId, pollItemVotes);
         return {
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {

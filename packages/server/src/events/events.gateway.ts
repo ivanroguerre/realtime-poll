@@ -22,7 +22,7 @@ export class EventsGateway {
     return { status: 'ok' };
   }
 
-  sendPollUpdate(items: PollItem[]) {
-    this.server.emit('poll-update', { items });
+  sendPollUpdate(id: PollItem['id'], votes: PollItem['votes']) {
+    this.server.emit('poll-update', { id, votes });
   }
 }

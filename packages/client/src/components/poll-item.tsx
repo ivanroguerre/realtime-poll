@@ -5,9 +5,12 @@ import { PollItem as PollItemType } from "shared";
 
 type PollItemProps = {
   item: PollItemType;
+  totalVotes: number;
 };
-const PollItem = ({ item }: PollItemProps): JSX.Element => {
+const PollItem = ({ item, totalVotes }: PollItemProps): JSX.Element => {
   const progressRef = useRef<HTMLDivElement>(null);
+  const votes = item.votes !== undefined ? item.votes : 0;
+  const barProgress = totalVotes !== 0 ? (votes * 100) / totalVotes : 0;
 
   useEffect(() => {
     const progress: HTMLDivElement = progressRef.current!.querySelector(
@@ -29,7 +32,7 @@ const PollItem = ({ item }: PollItemProps): JSX.Element => {
         boxShadow="inset -1px 2px 2px 0px rgba(0, 0, 0, 0.3)"
         height="32px"
         ref={progressRef}
-        value={item.votes !== undefined ? item.votes : 0}
+        value={barProgress}
       />
       <HStack
         h="32px"

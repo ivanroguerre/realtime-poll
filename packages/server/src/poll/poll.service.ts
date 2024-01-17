@@ -24,5 +24,6 @@ export class PollService {
   vote(id: PollItem['id']) {
     const votedItem = this.items.find((item) => item.id === id);
     votedItem.votes = votedItem.votes !== undefined ? votedItem.votes + 1 : 1;
+    return votedItem.votes;
   }
 }
