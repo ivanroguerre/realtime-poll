@@ -4,11 +4,18 @@ import {
   InteractionType,
   MessageComponentTypes,
 } from 'discord-interactions';
+
 import { DiscordService } from './discord.service';
+import { EventsGateway } from 'src/events/events.gateway';
+import { PollService } from 'src/poll/poll.service';
 
 @Controller('discord')
 export class DiscordController {
-  constructor(private discordService: DiscordService) {}
+  constructor(
+    private discordService: DiscordService,
+    private pollService: PollService,
+    private eventsGateway: EventsGateway,
+  ) {}
 
   @Post('interactions')
   discordInteractions(@Req() request) {
@@ -50,6 +57,8 @@ export class DiscordController {
       if (componentId === 'vote_choice') {
         const userId = request.body.member.user.global_name;
         const pollItemId = data.values[0];
+        this.pollService.vote(pollItemId);
+        this.eventsGateway.sendPollUpdate(this.pollService.getItems());
         return {
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {

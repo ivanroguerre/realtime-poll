@@ -6,6 +6,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 
+import { PollItem } from 'shared';
 import { PollService } from 'src/poll/poll.service';
 import { PollSetupInfo } from 'src/common/types';
 
@@ -19,5 +20,9 @@ export class EventsGateway {
   handlePollSetup(@MessageBody() pollSetupInfo: PollSetupInfo) {
     this.pollService.pollSetup(pollSetupInfo);
     return { status: 'ok' };
+  }
+
+  sendPollUpdate(items: PollItem[]) {
+    this.server.emit('poll-update', { items });
   }
 }

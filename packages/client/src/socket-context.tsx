@@ -13,6 +13,9 @@ export const SocketContext = createContext<SocketContextType>(
 export const SocketContextProvider = ({
   children,
 }: PropsWithChildren): JSX.Element => {
+  socket.on("poll-update", (d) => {
+    console.log(d);
+  });
   return (
     <SocketContext.Provider value={{ socket }}>
       {children}
