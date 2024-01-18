@@ -17,8 +17,8 @@ export class EventsGateway {
   server: Server;
 
   @SubscribeMessage('poll-setup')
-  handlePollSetup(@MessageBody() pollSetupInfo: PollSetupInfo) {
-    this.pollService.pollSetup(pollSetupInfo);
+  async handlePollSetup(@MessageBody() pollSetupInfo: PollSetupInfo) {
+    await this.pollService.pollSetup(pollSetupInfo);
     return { status: 'ok' };
   }
 
