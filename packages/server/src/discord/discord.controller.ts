@@ -29,34 +29,8 @@ export class DiscordController {
       const { name } = data;
 
       if (name === 'votar') {
-        return {
-          data: {
-            content: this.discordService.getPollTitle(),
-            components: [
-              {
-                type: MessageComponentTypes.ACTION_ROW,
-                components: [
-                  {
-                    type: MessageComponentTypes.STRING_SELECT,
-                    custom_id: 'vote_choice',
-                    options: this.discordService.getPollOptions(),
-                    placeholder:
-                      'Seleccione el elemento por el cual va a votar',
-                  },
-                ],
-              },
-            ],
-          },
-          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        };
-      }
-    }
-
-    if (type === InteractionType.MESSAGE_COMPONENT) {
-      const componentId = data.custom_id;
-      if (componentId === 'vote_choice') {
         const userId = request.body.member.user.global_name;
-        const pollItemId = data.values[0];
+        const pollItemId = data.options[0].value;
         const pollItemVotes = this.pollService.vote(pollItemId);
         this.eventsGateway.sendPollUpdate(pollItemId, pollItemVotes);
         return {
@@ -67,7 +41,5 @@ export class DiscordController {
         };
       }
     }
-
-    return 'hola';
   }
 }
