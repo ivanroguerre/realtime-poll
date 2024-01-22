@@ -45,7 +45,13 @@ const PollContextProvider = ({ children }: PropsWithChildren): JSX.Element => {
         _item.id === id ? { ..._item, value: value } : _item
       )
     );
-  const finish = () => setStatus(Status.Finish);
+  const finish = () => {
+    setStatus(Status.Load);
+    setStatus(Status.Finish);
+    socket.emit("poll-finish", (res: { status: string }) => {
+      if (res.status === "ok") setStatus(Status.Finish);
+    });
+  };
   const load = () => setStatus(Status.Load);
   const start = () => {
     setStatus(Status.Load);

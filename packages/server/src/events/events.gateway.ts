@@ -16,6 +16,12 @@ export class EventsGateway {
   @WebSocketServer()
   server: Server;
 
+  @SubscribeMessage('poll-finish')
+  async handlePollFinish() {
+    await this.pollService.pollFinish();
+    return { status: 'ok' };
+  }
+
   @SubscribeMessage('poll-setup')
   async handlePollSetup(@MessageBody() pollSetupInfo: PollSetupInfo) {
     await this.pollService.pollSetup(pollSetupInfo);

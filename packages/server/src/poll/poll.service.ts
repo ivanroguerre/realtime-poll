@@ -20,6 +20,19 @@ export class PollService {
     return this.title;
   }
 
+  async pollFinish() {
+    const endpoint = `/channels/${this.configService.get(
+      'CHANNEL_ID',
+    )}/messages`;
+    const message = { content: 'La votación ha finalizado' };
+    await discordRequest(
+      this.configService.get('API_BASE_URL'),
+      endpoint,
+      { method: 'POST', body: message },
+      this.configService.get('DISCORD_TOKEN'),
+    );
+  }
+
   async pollSetup(pollSetupInfo: PollSetupInfo) {
     this.items = pollSetupInfo.items;
     this.title = pollSetupInfo.title;
