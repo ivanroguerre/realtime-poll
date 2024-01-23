@@ -10,10 +10,15 @@ export class PollService {
   constructor(private configService: ConfigService) {}
 
   private items: PollItem[];
+  private pollActive: boolean = false;
   private title: PollSetupInfo['title'];
 
   getItems() {
     return this.items;
+  }
+
+  getPollActive() {
+    return this.pollActive;
   }
 
   getTitle() {
@@ -21,6 +26,7 @@ export class PollService {
   }
 
   async pollFinish() {
+    this.pollActive = false;
     const endpoint = `/channels/${this.configService.get(
       'CHANNEL_ID',
     )}/messages`;
@@ -34,6 +40,7 @@ export class PollService {
   }
 
   async pollSetup(pollSetupInfo: PollSetupInfo) {
+    this.pollActive = true;
     this.items = pollSetupInfo.items;
     this.title = pollSetupInfo.title;
     const endpoint = `/channels/${this.configService.get(

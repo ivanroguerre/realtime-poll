@@ -29,6 +29,13 @@ export class DiscordController {
       const { name } = data;
 
       if (name === 'votar') {
+        if (!this.pollService.getPollActive())
+          return {
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: `¡No hay una votación activa!`,
+            },
+          };
         const userId = request.body.member.user.global_name;
         const pollItemId = data.options[0].value;
         const pollItemVotes = this.pollService.vote(pollItemId);
