@@ -38,8 +38,16 @@ export class DiscordController {
           };
         const userId = request.body.member.user.global_name;
         const pollItemId = data.options[0].value;
-        const pollItemVotes = this.pollService.vote(pollItemId);
-        this.eventsGateway.sendPollUpdate(pollItemId, pollItemVotes);
+        const voteResult = this.pollService.vote(pollItemId, userId);
+        this.eventsGateway.sendPollUpdate(
+          voteResult.votedItem.id,
+          voteResult.votedItem.votes,
+        );
+        if (voteResult.alreadyVotedItem.id !== undefined)
+          this.eventsGateway.sendPollUpdate(
+            voteResult.alreadyVotedItem.id,
+            voteResult.alreadyVotedItem.votes,
+          );
         return {
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {

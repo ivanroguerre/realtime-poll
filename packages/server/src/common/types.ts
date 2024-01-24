@@ -18,3 +18,8 @@ export type PollSetupInfo = {
   title: string;
   items: PollItem[];
 };
+
+export type Voter = {
+  itemId: PollItem['id'];
+  voterId: string;
+};
