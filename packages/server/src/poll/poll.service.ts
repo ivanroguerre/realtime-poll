@@ -3,7 +3,12 @@ import { Injectable } from '@nestjs/common';
 
 import { PollItem } from 'shared';
 import { PollSetupInfo, Voter } from 'src/common/types';
-import { buildPollStartMessageContent, discordRequest } from 'src/common/utils';
+import {
+  buildPollFinishMessageContent,
+  buildPollStartMessageContent,
+  discordRequest,
+  getWinners,
+} from 'src/common/utils';
 
 @Injectable()
 export class PollService {
@@ -28,10 +33,13 @@ export class PollService {
 
   async pollFinish() {
     this.pollActive = false;
+    const messageContent = buildPollFinishMessageContent(
+      getWinners(this.getItems()),
+    );
     const endpoint = `/channels/${this.configService.get(
       'CHANNEL_ID',
     )}/messages`;
-    const message = { content: 'La votación ha finalizado' };
+    const message = { content: messageContent };
     await discordRequest(
       this.configService.get('API_BASE_URL'),
       endpoint,

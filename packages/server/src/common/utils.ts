@@ -2,6 +2,17 @@ import { Request, Response } from 'express';
 import { verifyKey } from 'discord-interactions';
 
 import { Command, PollSetupInfo } from './types';
+import { PollItem } from 'shared';
+
+export const buildPollFinishMessageContent = (winners: PollItem[]) => {
+  const firstWinner = winners[0];
+  const firstWinnerVotes =
+    firstWinner.votes !== undefined ? firstWinner.votes : 0;
+  return `
+Finaliza la votación. Ganador(es) con ${firstWinnerVotes} voto(s):
+${winners.map((winner) => `- ${winner.value}`)}
+  `;
+};
 
 export const buildPollStartMessageContent = (
   pollItems: PollSetupInfo['items'],
@@ -40,6 +51,23 @@ export const discordRequest = async (
     throw new Error(JSON.stringify(res.json()));
   }
   return res;
+};
+
+export const getWinners = (items: PollItem[]) => {
+  const itemsSortedByVotes = (
+    JSON.parse(JSON.stringify(items)) as PollItem[]
+  ).sort((itemA, itemB) => {
+    const votesA = itemA.votes !== undefined ? itemA.votes : 0;
+    const votesB = itemB.votes !== undefined ? itemB.votes : 0;
+    return votesB - votesA;
+  });
+  const firstWinner = itemsSortedByVotes[0];
+  const firstWinnerVotes =
+    firstWinner.votes !== undefined ? firstWinner.votes : 0;
+  return itemsSortedByVotes.filter((item) => {
+    const itemVotes = item.votes !== undefined ? item.votes : 0;
+    return itemVotes === firstWinnerVotes;
+  });
 };
 
 export const installGlobalCommands = async (
