@@ -24,6 +24,7 @@ type PollContextType = {
   items: PollItem[];
   status: Status;
   title: string;
+  winners: PollItem[];
 };
 const PollContext = createContext<PollContextType>({} as PollContextType);
 
@@ -31,6 +32,7 @@ const nanoid = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", 5);
 
 const PollContextProvider = ({ children }: PropsWithChildren): JSX.Element => {
   const [items, setItems] = useState<PollItem[]>([]);
+  const [winners, setWinners] = useState<PollItem[]>([]);
   const [status, setStatus] = useState<Status>(Status.Setup);
   const [title, setTitle] = useState("");
   const socket = useSocket();
@@ -49,7 +51,12 @@ const PollContextProvider = ({ children }: PropsWithChildren): JSX.Element => {
     setStatus(Status.Load);
     setStatus(Status.Finish);
     socket.emit("poll-finish", (res: { status: string }) => {
-      if (res.status === "ok") setStatus(Status.Finish);
+      if (res.status === "ok") {
+        fetch("http://127.0.0.1:3000/poll/winners")
+          .then((rawRes) => rawRes.json())
+          .then((_winners: PollItem[]) => setWinners(_winners));
+        setStatus(Status.Finish);
+      }
     });
   };
   const load = () => setStatus(Status.Load);
@@ -83,6 +90,7 @@ const PollContextProvider = ({ children }: PropsWithChildren): JSX.Element => {
         items,
         status,
         title,
+        winners,
       }}
     >
       {children}

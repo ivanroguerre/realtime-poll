@@ -17,7 +17,7 @@ export class PollService {
   private items: PollItem[];
   private pollActive: boolean = false;
   private title: PollSetupInfo['title'];
-  private voters: Voter[] = [];
+  private voters: Voter[];
 
   getItems() {
     return this.items;
@@ -50,6 +50,7 @@ export class PollService {
 
   async pollSetup(pollSetupInfo: PollSetupInfo) {
     this.pollActive = true;
+    this.voters = [];
     this.items = pollSetupInfo.items;
     this.title = pollSetupInfo.title;
     const endpoint = `/channels/${this.configService.get(

@@ -28,3 +28,9 @@ export const useStatus = () => {
 
   return { finish, load, start, status };
 };
+
+export const useWinners = () => {
+  const { winners } = useContext(PollContext);
+
+  return winners;
+};
