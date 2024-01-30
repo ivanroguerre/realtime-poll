@@ -24,7 +24,7 @@ Los elementos a votar son:
 ${pollItems
   .map(
     (pollItem) =>
-      `- ${pollItem.value} (usar \`/vote ${pollItem.id}\` para votar).`,
+      `- ${pollItem.value} (usar \`/votar ${pollItem.id}\` para votar).`,
   )
   .join('\n')}
   `;

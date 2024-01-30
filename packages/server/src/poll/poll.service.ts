@@ -18,6 +18,7 @@ export class PollService {
   private pollActive: boolean = false;
   private title: PollSetupInfo['title'];
   private voters: Voter[];
+  private setupMessageId;
 
   getItems() {
     return this.items;
@@ -62,12 +63,13 @@ export class PollService {
         pollSetupInfo['title'],
       ),
     };
-    await discordRequest(
+    const messageRequest = await discordRequest(
       this.configService.get('API_BASE_URL'),
       endpoint,
       { method: 'POST', body: message },
       this.configService.get('DISCORD_TOKEN'),
     );
+    console.log(await messageRequest.json());
   }
 
   vote(id: PollItem['id'], voterId: Voter['voterId']) {
