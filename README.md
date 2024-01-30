@@ -8,3 +8,5 @@ de uso en el que el moderador comparte su pantalla a los participantes en la lla
 y presenta la pestaña del navegador en donde se puede ver el resultado de la votación
 en tiempo real. El moderador puede finalizar la votación en cualquier momento para
 dejar de recibir más votos.
+
+![](https://github.com/realtime-poll/demo.gif)
