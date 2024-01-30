@@ -9,4 +9,4 @@ y presenta la pestaña del navegador en donde se puede ver el resultado de la vo
 en tiempo real. El moderador puede finalizar la votación en cualquier momento para
 dejar de recibir más votos.
 
-![](https://github.com/ivanroguerre/realtime-poll/demo.gif)
+![](https://github.com/ivanroguerre/realtime-poll/blob/main/demo.gif)
